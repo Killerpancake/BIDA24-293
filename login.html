@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employer Login - CampusConnect</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-light" style="background-image: url(images/background_contact.png);">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container d-flex justify-content-between">
+
+            <!-- Navbar Links (right) -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="listing.html">Available</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item">
+                        <a class="btn btn-primary" href="login.html">Post a Job</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Navbar Brand (Centered & Larger) -->
+            <a class="navbar-brand fw-bold mx-auto position-absolute start-50 translate-middle-x site-title text-success"
+                href="index.html">CampusConnect</a>
+
+            <!-- Navbar Toggle Button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="card p-4 shadow-sm" style="min-width: 350px;">
+            <h3 class="text-center mb-4">Employer Login</h3>
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label>Email</label>
+                    <input type="email" id="email" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                    <label>Password</label>
+                    <input type="password" id="password" class="form-control" required />
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+            <p class="text-muted small mt-3 text-center">Use demo: employer@example.com / pass123</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+<footer class="bg-dark text-white text-center py-4 mt-5">
+    <p>&copy; 2025 CampusConnect. All rights reserved.</p>
+    <a href="contact.html" class="btn btn-outline-light">Contact Us</a>
+  </footer>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            // Dummy credentials
+            if (email === "employer@example.com" && password === "pass123") {
+                localStorage.setItem("loggedInEmployer", email);
+                alert("✅ Login successful!");
+                window.location.href = "employer.html";
+            } else {
+                alert("❌ Invalid email or password.");
+            }
+        });
+    </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CampusConnect</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    .btn-apply {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .btn-apply:hover {
+      background-color: #218838;
+    }
+
+    .site-title {
+      color: #007bff !important;
+    }
+  </style>
+</head>
+<body style="background-image: url(images/background_listing.png);">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+  <div class="container d-flex justify-content-between">
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="listing.html">Available</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+        <li class="nav-item">
+          <a class="btn btn-primary ms-lg-3 mt-2 mt-lg-0" href="login.html">Post a Job</a>
+        </li>
+      </ul>
+    </div>
+    <a class="navbar-brand fw-bold mx-auto position-absolute start-50 translate-middle-x site-title text-success"
+       href="index.html">CampusConnect</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<header class="hero-section text-center text-white d-flex align-items-center">
+  <div class="container">
+    <h1 class="display-4 fw-bold">Find Part-Time Jobs That Fit Your Schedule</h1>
+    <p class="lead">Search, filter, and apply for flexible job opportunities.</p>
+  </div>
+</header>
+
+<div class="container mt-4">
+  <!-- Search and Filter -->
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <input type="text" id="keywordFilter" class="form-control" placeholder="Search for jobs...">
+    </div>
+    <div class="col-md-4">
+      <select id="locationFilter" class="form-control">
+        <option value="">All Locations</option>
+        <option value="Gaborone">Gaborone</option>
+        <option value="Francistown">Francistown</option>
+      </select>
+    </div>
+    <div class="col-md-4">
+      <select id="typeFilter" class="form-control">
+        <option value="">Job Type</option>
+        <option value="Remote">Remote</option>
+        <option value="On-Site">On-Site</option>
+        <option value="Hybrid">Hybrid</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Job Listings -->
+  <div class="row" id="jobCardsContainer"></div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-4 mt-5">
+  <p>&copy; 2025 CampusConnect. All rights reserved.</p>
+  <a href="contact.html" class="btn btn-outline-light">Contact Us</a>
+</footer>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const jobCardsContainer = document.getElementById("jobCardsContainer");
+    const keywordInput = document.getElementById("keywordFilter");
+    const locationSelect = document.getElementById("locationFilter");
+    const typeSelect = document.getElementById("typeFilter");
+
+    let jobs = JSON.parse(localStorage.getItem("jobs")) || [];
+
+    function displayJobs(filteredJobs) {
+      jobCardsContainer.innerHTML = "";
+
+      if (filteredJobs.length === 0) {
+        jobCardsContainer.innerHTML = "<p class='text-center'>No jobs match your filters.</p>";
+        return;
+      }
+
+      filteredJobs.forEach((job, index) => {
+        const card = `
+          <div class="col-md-4">
+            <div class="card shadow-sm border-0 mb-4">
+              <div class="card-body">
+                <h5 class="card-title">${job.title}</h5>
+                <p class="card-text"><strong>Company:</strong> ${job.company}</p>
+                <p class="card-text"><strong>Pay:</strong> ${job.pay} BWP/hour</p>
+                <p class="card-text"><strong>Type:</strong> ${job.type}</p>
+                <p class="card-text"><strong>Location:</strong> ${job.location}</p>
+                <p class="card-text"><strong>Contact:</strong> <a href="mailto:${job.contact}">${job.contact}</a></p>
+                <button class="btn btn-apply w-100" data-index="${index}">Apply Now</button>
+              </div>
+            </div>
+          </div>`;
+        jobCardsContainer.innerHTML += card;
+      });
+
+      // Attach click listeners for Apply buttons
+      const applyButtons = document.querySelectorAll(".btn-apply");
+      applyButtons.forEach(button => {
+        button.addEventListener("click", function () {
+          const jobIndex = this.getAttribute("data-index");
+          const job = filteredJobs[jobIndex];
+
+          const confirmed = confirm(`Do you want to apply for "${job.title}" at ${job.company}?`);
+
+          if (confirmed) {
+            alert(`✅ Your application has been sent to ${job.company}!\n📧 Contact: ${job.contact}`);
+            console.log(`Student applied for ${job.title}. Email sent to: ${job.contact}`);
+
+            // Store application info (optional)
+            const applications = JSON.parse(localStorage.getItem("applications")) || [];
+            applications.push({
+              jobTitle: job.title,
+              company: job.company,
+              contact: job.contact,
+              date: new Date().toLocaleString()
+            });
+            localStorage.setItem("applications", JSON.stringify(applications));
+          }
+        });
+      });
+    }
+
+    function filterJobs() {
+      const keyword = keywordInput.value.toLowerCase();
+      const selectedLocation = locationSelect.value;
+      const selectedType = typeSelect.value;
+
+      const filtered = jobs.filter(job => {
+        const matchesKeyword =
+          job.title.toLowerCase().includes(keyword) ||
+          job.company.toLowerCase().includes(keyword);
+
+        const matchesLocation = selectedLocation === "" || job.location === selectedLocation;
+        const matchesType = selectedType === "" || job.type === selectedType;
+
+        return matchesKeyword && matchesLocation && matchesType;
+      });
+
+      displayJobs(filtered);
+    }
+
+    // Initial load
+    displayJobs(jobs);
+
+    // Live filtering
+    keywordInput.addEventListener("input", filterJobs);
+    locationSelect.addEventListener("change", filterJobs);
+    typeSelect.addEventListener("change", filterJobs);
+  });
+</script>
+
+</body>
+</html>
