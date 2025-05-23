@@ -16,16 +16,38 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+.carousel-inner {
+  color: #EEEEEE;
+}
+
+
+.navbar .navbar-brand {
+  color: rgb(84, 152, 84) !important;
+}
+
+h3 {
+  color: #222831;
+}
+
 body > .container {
   flex: 1; /* Fills the available space */
 }
 
-h1 {
-  color: #222831;
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+header, h1 {
+  color: #ffffff;
 }
 
 p {
   color: #222831;
+}
+
+header, p {
+  color: #ffffff;
 }
 
 section {
@@ -48,12 +70,31 @@ footer p {
   color: beige;
 }
 
-.image-overlay {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  background-color: rgba(255, 255, 255, 0.5);
+.card {
+  background-color: rgba(255, 255, 255, 0.9); /* Set transparency */
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+.card p {
+  color: #222831;
+}
+
+section {
+  padding: 2rem 0;
+  border-radius: 10px;
+  background-color: transparent;
+}
+
+.bg-light {
+  background-color: rgba(255, 255, 255, 0.9) !important; /* Set transparency */
+  color: #094d18;
+}
+
+.bg-light p {
+  color: #222831;
+}
+
 
 .lead {
   color: #d6e7ff;
@@ -62,6 +103,10 @@ footer p {
 .container .d-flex .justify-content-between {
   color: #EEEEEE;
   background-color: #222831;
+}
+
+.background-overlay {
+  background-color: rgba(30, 30, 30, 0.5);
 }
 
 .navbar-brand {
